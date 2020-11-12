@@ -25,7 +25,7 @@
 #define MAXUSES 3
 
 #define ROW_BYTES 32
-#define NUM_ROWS  1000000
+#define NUM_ROWS  100000000
 #define RANDBYTES 4
 
 #define CARD_T uint64_t
@@ -229,8 +229,9 @@ int main(){
 
         RAND_bytes(key, 32);
         RAND_bytes(iv,16);
+        unsigned long long size = (unsigned long )NUM_ROWS * (unsigned long long)ROW_BYTES;
 
-        uint8_t * table=calloc(NUM_ROWS * ROW_BYTES,sizeof(uint8_t));
+        uint8_t * table=calloc(size,sizeof(uint8_t));
         TOKEN_T token;
         int try;
 
@@ -239,6 +240,7 @@ int main(){
         TIME_T expiry = get_time(t) + LIFESPAN;
 
         for (int i = 0; i<NUM_ROWS; i++){
+            printf("%d\n",i);
             cb = i;
             pk = i;
             if(i==0){
