@@ -292,6 +292,8 @@ void detokenization(uint8_t *table, TOKEN_T token, CARD_T * card, SIGN_T signatu
 //                      printb( row ,8);printf(" ");printb( row +8,4);printf(" ");printb( row +12,1);printf(" ");printb( row +13,8);printf(" ");printb( row +21,8);printf("\n\n");
         }
         else{
+            drow[12] --;
+            encrypt(drow,31,key,iv,row);
             printf("Maximal number of uses reached, cleaning token\n");
             clean(row, table, key, iv);
         }
@@ -302,6 +304,7 @@ void detokenization(uint8_t *table, TOKEN_T token, CARD_T * card, SIGN_T signatu
         exit(1);
     }
 }
+
 
 
 void updateKey(uint8_t *table, unsigned char oldKey[32], unsigned char oldiv[16], unsigned char newKey[32], unsigned char newiv[16]){
