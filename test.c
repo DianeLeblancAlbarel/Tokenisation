@@ -1,7 +1,5 @@
-
 #include "token.h"
 #include "tools.h"
-
 
 int main(){
 
@@ -12,7 +10,7 @@ int main(){
 
     CARD_T cb;
     PK_T pk = 1234;
-        SIGN_T sign = 1234;
+    SIGN_T sign = 1234;
 
     unsigned char key[32];
     unsigned char iv[16];
@@ -31,7 +29,7 @@ int main(){
     unsigned char nbUse;
     TOKEN_T token[1];
 
-        temp = get_time(t);
+    temp = get_time(t);
 
     for (int i = 0;i<10;i++) {
         tempTime = clock();
@@ -44,13 +42,13 @@ int main(){
         }
     }
 
-        char input;
+    char input;
 
-        uint32_t nbTokenInserted = count_tokens(table);
+    uint32_t nbTokenInserted = count_tokens(table);
     float perc = nbTokenInserted*100/NUM_ROWS;
     printf("%d tokens generated (%.2f%c)\n\n", nbTokenInserted, perc, 37);
 
-        print_table(table, FirstTokens,0,5,key,iv);
+    print_table(table, FirstTokens,0,5,key,iv);
 
     do {
         printf("[1] display the first tokens\n");
