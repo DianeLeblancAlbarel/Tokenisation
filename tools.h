@@ -1,6 +1,15 @@
 #ifndef TOOLS
 #define TOOLS
 
+#include "token.h"
+
+#include <openssl/sha.h>
+#include <openssl/rand.h>
+#include <openssl/aes.h>
+#include <openssl/conf.h>
+#include <openssl/evp.h>
+#include <openssl/err.h>
+
 void handleErrors(void);
 
 int encrypt(unsigned char *plaintext, int plaintext_len, unsigned char *key,unsigned char *iv, unsigned char *ciphertext);
