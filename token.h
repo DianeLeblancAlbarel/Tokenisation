@@ -1,3 +1,5 @@
+#ifndef TOKEN_DEF
+#define TOKEN_DEF
 
 static const uint8_t zero_row[ROW_BYTES] = { 0 };
 
@@ -11,3 +13,5 @@ void clean(uint8_t * row, uint8_t * table, unsigned char key[32], unsigned char 
 void cleanTable(uint8_t *table, unsigned char key[32], unsigned char iv[16] );
 
 void updateKey(uint8_t *table, unsigned char oldKey[32], unsigned char oldiv[16], unsigned char newKey[32], unsigned char newiv[16]);
+
+#endif
