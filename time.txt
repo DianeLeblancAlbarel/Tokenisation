@@ -1,6 +1,0 @@
-total: 703370.000000, mean : 0.000007, first : 0.000017, last 0.000000, number insert : 94902 size : 100000 clean time : 15.775231
-total: 754899.000000, mean : 0.000008, first : 0.000030, last 0.000000, number insert : 94863 size : 100000 clean time : 15.775231
-total: 929142.000000, mean : 0.000009, first : 0.000018, last 0.000000, number insert : 94924 size : 100000 clean time : 15.775231
-total: 811084.000000, mean : 0.000008, first : 0.000025, last 0.000000, number insert : 94734 size : 100000 clean time : 15.775231
-total: 16.250020, mean : 0.000016, first : 0.000039, last 0.100005, number insert : 999942 size : 1000000 clean time : 0.434193
-total: 1923.781207, mean : 0.000017, first : 0.000035, last 0.100004, number insert : 99988693 size : 100000000 clean time : 38.830245
