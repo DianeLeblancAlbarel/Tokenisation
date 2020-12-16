@@ -1,6 +1,10 @@
 #include "tools.h"
 #include "token.h"
 
+#define DOHASH 1
+
+#if DOHASH
+
 int tokenization(uint8_t *table, CARD_T cb, USES_T uses, TIME_T deadline, PK_T  pk, TOKEN_T *tokenToReturn, unsigned char key[32], unsigned char iv[16]){
     /* Tries to find a space to insert a new token into the table
         Inputs:  the table of tokens, 
@@ -51,6 +55,107 @@ int tokenization(uint8_t *table, CARD_T cb, USES_T uses, TIME_T deadline, PK_T  
     else return 0;
 }
 
+void clean(uint8_t * row, uint8_t * table, unsigned char key[32], unsigned char iv[16]){
+    /* Chechs the validity of a token and zeroes out the memory if it isn't
+        Inputs:  the row of the table, 
+                 the table
+                 the key and iv for encryption of the table
+    */
+    struct timeval tdays;
+    gettimeofday(&tdays,0);
+    TIME_T now = get_time(tdays);
+    TIME_T expiry;
+    CARD_T card;
+    TOKEN_T token;
+    RAND_T random;
+    uint8_t hash[HASH_LENGTH];
+
+    if(memcmp(zero_row, row, 32)){ // token exists
+        unsigned char drow[32];
+        decrypt(row, 32, key, iv, drow);
+
+        uint8_t hrow[ROW_BYTES] = { 0 };
+        memcpy(hrow, drow, 12);
+        memcpy(hrow+13, drow +13, 16);
+
+        SHA224((const unsigned char *)row, ROW_BYTES, hash);
+        memcpy(&random, hash,4);
+        token = random % NUM_ROWS;
+        memcpy(&card, drow,8);
+        memcpy(&expiry, drow+13, 8);
+
+        if ( !memcmp(zero_row, drow+12,1)  || expiry < now || !cardIsValid(card) || (row == table+token*ROW_BYTES) ) // if token not valid
+            memset(row, 0, ROW_BYTES); 
+    }
+}
+
+#else
+    /* Indentical functions in outputs but different security and efficiency properties */
+
+int tokenization(uint8_t *table, CARD_T cb, USES_T uses, TIME_T deadline, PK_T  pk, TOKEN_T *tokenToReturn, unsigned char key[32], unsigned char iv[16]){
+    TOKEN_T token;
+    uint32_t random = -1;
+
+    int timepast = 0;
+    struct timeval begin, end;
+    double delta;
+    gettimeofday(&begin,0);
+
+    uint8_t row[ROW_BYTES] = { 0 };
+    memcpy(row, &cb, 8);
+    memcpy(row+12, &uses, 1);
+    memcpy(row+13, &deadline, 8);
+    memcpy(row+21, &pk,8);
+
+    do{
+        do{
+            RAND_bytes((unsigned char *)&random, RANDBYTES);
+        } while(random > 0b11111010010101101110101000000000);
+
+                memcpy(row+8, &random, 4);
+        token = random % NUM_ROWS;
+
+        gettimeofday(&end,0);
+        delta = get_time_execution(begin,end);
+    } while ( memcmp (zero_row, table + token*ROW_BYTES, 8) && delta<TIMEFRAME);
+
+    if ( !memcmp(zero_row, table+token*ROW_BYTES, 8)){
+        encrypt (row, 31, key, iv, table+token*ROW_BYTES);
+        *tokenToReturn = token;
+        return 1;
+    }
+    else return 0;
+}
+
+void clean(uint8_t * row, uint8_t * table, unsigned char key[32], unsigned char iv[16]){
+    struct timeval tdays;
+    gettimeofday(&tdays,0);
+    TIME_T now = get_time(tdays);
+    TIME_T expiry;
+    CARD_T card;
+    TOKEN_T token;
+    RAND_T random;
+    uint8_t hash[HASH_LENGTH];
+
+    if(memcmp(zero_row, row, 32)){
+        unsigned char drow[32];
+        decrypt(row, 32, key, iv, drow);
+
+        uint8_t hrow[ROW_BYTES] = { 0 };
+        memcpy(hrow, drow, 12);
+        memcpy(hrow+13, drow +13, 16);
+
+        memcpy(&random, drow+8,4);
+        token = random % NUM_ROWS;
+        memcpy(&card, drow,8);
+        memcpy(&expiry, drow+13, 8);
+
+        if ( !memcmp(zero_row, drow+12,1)  || expiry < now || !cardIsValid(card) ) memset(row, 0, ROW_BYTES);
+    }
+}
+
+#endif
+
 void detokenization(uint8_t *table, TOKEN_T token, CARD_T * card, SIGN_T signature, unsigned char key[32], unsigned char iv[16] ){
     /* Uses the given token by returning the corresponding card number.
         Inputs:  the table of tokens, 
@@ -87,40 +192,6 @@ void detokenization(uint8_t *table, TOKEN_T token, CARD_T * card, SIGN_T signatu
         printf("Token is invalid or obsolete\n");
         clean(row, table, key, iv);
         exit(1);
-    }
-}
-
-void clean(uint8_t * row, uint8_t * table, unsigned char key[32], unsigned char iv[16]){
-    /* Chechs the validity of a token and zeroes out the memory if it isn't
-        Inputs:  the row of the table, 
-                 the table
-                 the key and iv for encryption of the table
-    */
-    struct timeval tdays;
-    gettimeofday(&tdays,0);
-    TIME_T now = get_time(tdays);
-    TIME_T expiry;
-    CARD_T card;
-    TOKEN_T token;
-    RAND_T random;
-    uint8_t hash[HASH_LENGTH];
-
-    if(memcmp(zero_row, row, 32)){ // token exists
-        unsigned char drow[32];
-        decrypt(row, 32, key, iv, drow);
-
-        uint8_t hrow[ROW_BYTES] = { 0 };
-        memcpy(hrow, drow, 12);
-        memcpy(hrow+13, drow +13, 16);
-
-        SHA224((const unsigned char *)row, ROW_BYTES, hash);
-        memcpy(&random, hash,4);
-        token = random % NUM_ROWS;
-        memcpy(&card, drow,8);
-        memcpy(&expiry, drow+13, 8);
-
-        if ( !memcmp(zero_row, drow+12,1)  || expiry < now || !cardIsValid(card) || (row == table+token*ROW_BYTES) ) // if token not valid
-            memset(row, 0, ROW_BYTES); 
     }
 }
 
