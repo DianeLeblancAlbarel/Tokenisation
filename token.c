@@ -5,15 +5,16 @@
 
 #if DOHASH
 
-int tokenization(uint8_t *table, CARD_T cb, USES_T uses, TIME_T deadline, PK_T  pk, TOKEN_T *tokenToReturn, unsigned char key[32], unsigned char iv[16]){
+int tokenization(uint8_t *table, CARD_T cb, USES_T uses, TIME_T deadline, PK_T  pk, TOKEN_T *tokenToReturn, unsigned char key[32], unsigned char iv[16], int *numberTry){
     /* Tries to find a space to insert a new token into the table
         Inputs:  the table of tokens, 
                  the card number to tokenize, 
                  the number of uses allowed for the token, 
                  the time of expiry of the token, 
                  the extra data stored for user authentification
-                 the address of the token to be filled in case of success
+                 the address of the token to be filled in case of success       
                  the key and iv for encryption of the table
+        Inputs/Outputs: the number of try before to exceed the timeframe or to generate a valid token
         Outputs: 1 in case of success of the token creation
                  0 in case of failure because the timeframe for creation has been exceeded
     */
@@ -22,7 +23,6 @@ int tokenization(uint8_t *table, CARD_T cb, USES_T uses, TIME_T deadline, PK_T  
     TOKEN_T token;
     uint32_t random = -1;
 
-    int timepast = 0;
     struct timeval begin, end;
     double delta;
     gettimeofday(&begin,0);
@@ -45,6 +45,7 @@ int tokenization(uint8_t *table, CARD_T cb, USES_T uses, TIME_T deadline, PK_T  
 
         gettimeofday(&end,0);
         delta = get_time_execution(begin,end);
+        *(numberTry)+=1;
     } while ( memcmp (zero_row, table + token*ROW_BYTES, 8) && delta<TIMEFRAME); // repeat tries until the timeframe is exceeded
 
     if ( !memcmp(zero_row, table+token*ROW_BYTES, 8)){ // a spot in the table has been found, encrypt and insert the token

@@ -36,4 +36,6 @@ void print_row(uint8_t * table, TOKEN_T token, unsigned char key[32], unsigned c
 
 void print_table(uint8_t * table, TOKEN_T * ListOfTokens, int beg, int end, unsigned char key[32], unsigned char iv[16]);
 
+void minmaxValue (int * table, int size,int *min, int *max);
+
 #endif

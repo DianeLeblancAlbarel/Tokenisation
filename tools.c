@@ -145,3 +145,12 @@ void print_table(uint8_t * table, TOKEN_T * ListOfTokens, int beg, int end, unsi
         if(memcmp(zero_row,table+ListOfTokens[k]*ROW_BYTES, 8)) print_row(table, ListOfTokens[k], key, iv);
     }
 }
+
+void minmaxValue (int * table, int size,int *min, int *max){
+    for (int i = 0; i < size; i++ ){
+        if (*(table+i)>*max)
+            *max = *(table+i);
+        if (*(table+i)<*min)
+            *min = *(table+i);
+    }
+}
