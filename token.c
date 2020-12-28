@@ -161,7 +161,7 @@ void detokenization(uint8_t *table, TOKEN_T token, CARD_T * card, SIGN_T signatu
     /* Uses the given token by returning the corresponding card number.
         Inputs:  the table of tokens, 
                  the token to use
-                 the address to write the card nuber corresponding to the token 
+                 the address to write the card number corresponding to the token 
                  the data required for user authentification
                  the key and iv for encryption of the table
     */

@@ -25,7 +25,7 @@
 #define LIFESPAN 10000
 #define MAXUSES 3
 #define ROW_BYTES 32
-#define NUM_ROWS  100000
+#define NUM_ROWS  100000000
 #define RANDBYTES 4
 
 #define CARD_T uint64_t
@@ -50,7 +50,7 @@ static const uint8_t zero_row[ROW_BYTES] = { 0 };
 int tokenization(uint8_t *table, CARD_T cb, USES_T uses, TIME_T deadline, PK_T  pk, TOKEN_T *tokenToReturn, unsigned char key[32], unsigned char iv[16], int *numberTry);
 //returns 1 in case of success, 0 otherwise
 
-void detokenization(uint8_t *table, TOKEN_T token, CARD_T * card, SIGN_T signature, unsigned char key[32], unsigned char iv[16] );
+void detokenization(uint8_t *table, TOKEN_T token, CARD_T * card, SIGN_T signature, unsigned char key[32], unsigned char iv[16]);
 
 void clean(uint8_t * row, uint8_t * table, unsigned char key[32], unsigned char iv[16]);
 

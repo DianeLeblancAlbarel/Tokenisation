@@ -147,7 +147,7 @@ void print_table(uint8_t * table, TOKEN_T * ListOfTokens, int beg, int end, unsi
 }
 
 void minmaxValue (int * table, int size,int *min, int *max){
-    for (int i = 0; i < size; i++ ){
+    for (int i = 0; i < size+1; i++ ){
         if (*(table+i)>*max)
             *max = *(table+i);
         if (*(table+i)<*min)
