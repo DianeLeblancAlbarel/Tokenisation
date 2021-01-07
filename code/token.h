@@ -25,7 +25,7 @@
 #define LIFESPAN 10000
 #define MAXUSES 3
 #define ROW_BYTES 32
-#define NUM_ROWS  10000
+#define NUM_ROWS  20
 #define RANDBYTES 4
 
 #define CARD_T uint64_t

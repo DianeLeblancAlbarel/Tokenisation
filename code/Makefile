@@ -1,6 +1,6 @@
 CC=gcc
 #CFLAGS=-Wall -Wextra -Werror -pedantic -O3 -g -pthread
-CFLAGS=-Wall
+CFLAGS=-Wall -g
 LIBS=-lm -lssl -lcrypto
 
 test: token.o tools.o test.o

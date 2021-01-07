@@ -33,7 +33,7 @@ unsigned long long size = (unsigned long )NUM_ROWS * (unsigned long long)ROW_BYT
         gettimeofday(&begin,0);
         gettimeofday(&t,0);
         temp = get_time(t);
-       success = tokenization(table,(CARD_T) 4837562834756767+rowNumber ,(USES_T) 1 ,(TIME_T) temp+1000, pk, token, key, iv,&numberTry);      
+       success = tokenization(table,(CARD_T) 4837562834756767+rowNumber ,(USES_T) 2 ,(TIME_T) temp+10000, pk, token, key, iv,&numberTry);      
        gettimeofday(&end,0);
        *timeTogenerate+=get_time_execution(begin,end);      
         *(tryPerTimeFrame+rowNumber)=numberTry;
@@ -61,7 +61,7 @@ unsigned long long size = (unsigned long )NUM_ROWS * (unsigned long long)ROW_BYT
 void detokenizationTest (uint8_t *table,TOKEN_T *generateToken, CARD_T *cardNumber,int lastRow,double *timeToDetokenise){
     struct timeval begin,end;
     gettimeofday(&begin,0);
-    for (int i =0;i<lastRow;i++)
+    for (int i =0;i<lastRow-1;i++)
         detokenization(table,*(generateToken+i),(cardNumber+i),sign,key,iv);
     gettimeofday(&end,0);
     *timeToDetokenise=get_time_execution(begin,end);
@@ -115,8 +115,10 @@ for (int i = 0;i<10;i++){
     minmaxValue(tryPerTimeFrame,lastRow,&min,&max);
     detokenizationTest(table,generateToken,cardNumber,lastRow,&timeToDetokenize);
     updateKeyTest(table,&timeToUpdate,newKey,newIv);
-    *key =*newKey;
-    *iv=*newIv;
+    for (int i = 0;i<32;i++)
+        key[i] =newKey[i];
+    for (int i=0;i<16;i++)    
+        iv[i]=newIv[i];
     cleanTest(table,&timeToClean);
     fprintf(fp,"table fealing rate for %d rows : %f%%\n",NUM_ROWS,fealing);
     if(fealing<100)
@@ -127,7 +129,11 @@ for (int i = 0;i<10;i++){
     fprintf(fp,"time to update key : %f\n",timeToUpdate);
     fprintf(fp,"time to clean the table : %f\n",timeToClean);
     fprintf(fp,"########\n");
-
+    fclose(fp);
+    free(table);
+    free(tryPerTimeFrame);
+    free(cardNumber);
+    free(generateToken);
 }
 //detokenizationTest(table,generateToken,cardNumber,lastRow);
 
@@ -249,3 +255,4 @@ for (int i = 0;i<10;i++){
 //     free(FirstTokens);
 //     free(table);
 }
+

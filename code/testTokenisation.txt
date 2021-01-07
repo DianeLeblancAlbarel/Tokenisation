@@ -67,3 +67,111 @@ try at the last row : 46409
 maximum try 66547
 minimum try 1
 time to generate a table : 1366.739755 secondes
+table fealing rate for 20 rows : 100.000000%
+try at the last row : 46
+maximum try 46
+minimum try 1
+time to generate a table : 0.000300 secondes
+time to detokenize all the row : 0.000415, per row : 0.000022
+time to update key : 0.000017
+time to clean the table : 0.000000
+########
+table fealing rate for 20 rows : 100.000000%
+try at the last row : 6
+maximum try 6
+minimum try 1
+time to generate a table : 0.000177 secondes
+time to detokenize all the row : 0.000404, per row : 0.000021
+time to update key : 0.000017
+time to clean the table : 0.000000
+########
+table fealing rate for 20 rows : 100.000000%
+try at the last row : 24
+maximum try 24
+minimum try 1
+time to generate a table : 0.000248 secondes
+time to detokenize all the row : 0.000388, per row : 0.000020
+time to update key : 0.000017
+time to clean the table : 0.000000
+########
+table fealing rate for 20 rows : 100.000000%
+try at the last row : 39
+maximum try 39
+minimum try 1
+time to generate a table : 0.000312 secondes
+time to detokenize all the row : 0.000388, per row : 0.000020
+time to update key : 0.000016
+time to clean the table : 0.000000
+########
+table fealing rate for 20 rows : 100.000000%
+try at the last row : 7
+maximum try 16
+minimum try 1
+time to generate a table : 0.000193 secondes
+time to detokenize all the row : 0.000331, per row : 0.000017
+time to update key : 0.000016
+time to clean the table : 0.000000
+########
+table fealing rate for 20 rows : 100.000000%
+try at the last row : 13
+maximum try 31
+minimum try 1
+time to generate a table : 0.000291 secondes
+time to detokenize all the row : 0.000385, per row : 0.000020
+time to update key : 0.000017
+time to clean the table : 0.000000
+########
+table fealing rate for 20 rows : 100.000000%
+try at the last row : 17
+maximum try 17
+minimum try 1
+time to generate a table : 0.000254 secondes
+time to detokenize all the row : 0.000385, per row : 0.000020
+time to update key : 0.000016
+time to clean the table : 0.000000
+########
+table fealing rate for 20 rows : 100.000000%
+try at the last row : 10
+maximum try 27
+minimum try 1
+time to generate a table : 0.000279 secondes
+time to detokenize all the row : 0.000398, per row : 0.000021
+time to update key : 0.000016
+time to clean the table : 0.000000
+########
+table fealing rate for 20 rows : 100.000000%
+try at the last row : 35
+maximum try 35
+minimum try 1
+time to generate a table : 0.000201 secondes
+time to detokenize all the row : 0.000187, per row : 0.000010
+time to update key : 0.000008
+time to clean the table : 0.000000
+########
+table fealing rate for 20 rows : 100.000000%
+try at the last row : 6
+maximum try 7
+minimum try 1
+time to generate a table : 0.000074 secondes
+time to detokenize all the row : 0.000150, per row : 0.000008
+time to update key : 0.000008
+time to clean the table : 0.000000
+########
+table fealing rate for 20 rows : 100.000000%
+try at the last row : 10
+maximum try 27
+minimum try 1
+time to generate a table : 0.000264 secondes
+time to detokenize all the row : 0.000482, per row : 0.000025
+time to update key : 0.000030
+time to clean the table : 0.000035
+########
+table fealing rate for 20 rows : 100.000000%
+try at the last row : 5
+maximum try 5
+minimum try 1
+time to generate a table : 0.000117 secondes
+time to detokenize all the row : 0.000383, per row : 0.000020
+time to update key : 0.000017
+time to clean the table : 0.000019
+########
