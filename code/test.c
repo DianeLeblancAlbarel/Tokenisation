@@ -16,14 +16,14 @@ unsigned long long size = (unsigned long )NUM_ROWS * (unsigned long long)ROW_BYT
 
 /*
 @param/return table that have to be fill
-@param/return tryPerTimeFrame array of trials numbers for each token of the table
+@param/return trialsPerTimeFrame array of trials numbers for each token of the table
 @param/return lastRow the last row generate without exceeding the time frame
 @param/return fillinGRate rate of feeling before the first failure
 @param/return cardNumber card number that will be generate in the table
 @param/return tokenGenerate token that will be generate
 @param/return timeToGenerate total time in seconds to generate the table
 */
- void generationTable (uint8_t *table, int *tryPerTimeFrame,int *lastRow,double *fillingRate,CARD_T * cardNumber, TOKEN_T *tokenGenerate, double *timeTogenerate){
+ void generationTable (uint8_t *table, int *trialsPerTimeFrame,int *lastRow,double *fillingRate,CARD_T * cardNumber, TOKEN_T *tokenGenerate, double *timeTogenerate){
     TOKEN_T token[1];
     int success=1;
     int numberTry = 0;
@@ -36,7 +36,7 @@ unsigned long long size = (unsigned long )NUM_ROWS * (unsigned long long)ROW_BYT
        success = tokenization(table,(CARD_T) 4837562834756767+rowNumber ,(USES_T) 2 ,(TIME_T) temp+10000, pk, token, key, iv,&numberTry);      
        gettimeofday(&end,0);
        *timeTogenerate+=get_time_execution(begin,end);      
-        *(tryPerTimeFrame+rowNumber)=numberTry;
+        *(trialsPerTimeFrame+rowNumber)=numberTry;
         *(cardNumber+rowNumber)= 4837562834756767+rowNumber;
         *(tokenGenerate+rowNumber)=*token;
         rowNumber+=1;
@@ -107,12 +107,12 @@ for (int i = 0;i<10;i++){
     uint8_t * table=calloc(size,sizeof(uint8_t));
     int lastRow=0,min = 2147483647u,max = 0;
     double filling = 0,timeToGenerate=0,timeToDetokenize=0,timeToClean=0,timeToUpdate=0;
-    int *tryPerTimeFrame = calloc(NUM_ROWS,sizeof(int));
+    int *trialsPerTimeFrame = calloc(NUM_ROWS,sizeof(int));
     CARD_T *cardNumber = calloc(NUM_ROWS,sizeof(CARD_T));
     TOKEN_T *generateToken = calloc(NUM_ROWS,sizeof(TOKEN_T));
 
-    generationTable(table,tryPerTimeFrame,&lastRow,&filling,cardNumber,generateToken,&timeToGenerate);
-    minmaxValue(tryPerTimeFrame,lastRow,&min,&max);
+    generationTable(table,trialsPerTimeFrame,&lastRow,&filling,cardNumber,generateToken,&timeToGenerate);
+    minmaxValue(trialsPerTimeFrame,lastRow,&min,&max);
     detokenizationTest(table,generateToken,cardNumber,lastRow,&timeToDetokenize);
     updateKeyTest(table,&timeToUpdate,newKey,newIv);
     for (int i = 0;i<32;i++)
@@ -122,15 +122,15 @@ for (int i = 0;i<10;i++){
     cleanTest(table,&timeToClean);
     fprintf(fp,"table filling rate for %d rows : %f%%\n",NUM_ROWS,filling);
     if(filling<100)
-        fprintf(fp,"try at the first failure : %d\n",*(tryPerTimeFrame+lastRow+1));
-    fprintf(fp,"try at the last row : %d\nmaximum try %d\nminimum try %d\n",*(tryPerTimeFrame+lastRow),max,min);
+        fprintf(fp,"try at the first failure : %d\n",*(trialsPerTimeFrame+lastRow+1));
+    fprintf(fp,"try at the last row : %d\nmaximum try %d\nminimum try %d\n",*(trialsPerTimeFrame+lastRow),max,min);
     fprintf(fp,"time to generate a table : %f secondes\n",timeToGenerate);
     fprintf(fp,"time to detokenize all the row : %f, per row : %f\n",timeToDetokenize,timeToDetokenize/lastRow);
     fprintf(fp,"time to update key : %f\n",timeToUpdate);
     fprintf(fp,"time to clean the table : %f\n",timeToClean);
     fprintf(fp,"########\n");
     free(table);
-    free(tryPerTimeFrame);
+    free(trialsPerTimeFrame);
     free(cardNumber);
     free(generateToken);
 }
@@ -138,7 +138,7 @@ fclose(fp);
 
 //detokenizationTest(table,generateToken,cardNumber,lastRow);
 
-// free(tryPerTimeFrame);
+// free(trialsPerTimeFrame);
 // free(table);
 //  RAND_bytes(key, 32);
 //     RAND_bytes(iv,16);
