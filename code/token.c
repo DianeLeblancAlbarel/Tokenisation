@@ -174,14 +174,14 @@ void detokenization(uint8_t *table, TOKEN_T token, CARD_T * card, SIGN_T signatu
     uint8_t drow[32];
 
     decrypt(row, 32, key, iv, drow); // get the required row as plaintext
-    print_row(table, token, key, iv);
+    //print_row(table, token, key, iv);
     
     memcpy(&expiry, drow+13, 8);
     if( memcmp(zero_row, drow+12,1) && expiry > now && signatureIsValid((PK_T *) drow+21, &signature) ) { //token is valid
         memcpy(card, drow, 8);
         if (drow[12] > 1 ){
             drow[12] --;
-            printf("This token can be used again");
+            printf("This token can be used again\n");
             encrypt(drow,31,key,iv,row);// insert modified date into the table
         }
         else{
