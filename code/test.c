@@ -129,12 +129,13 @@ for (int i = 0;i<10;i++){
     fprintf(fp,"time to update key : %f\n",timeToUpdate);
     fprintf(fp,"time to clean the table : %f\n",timeToClean);
     fprintf(fp,"########\n");
-    fclose(fp);
     free(table);
     free(tryPerTimeFrame);
     free(cardNumber);
     free(generateToken);
 }
+fclose(fp);
+
 //detokenizationTest(table,generateToken,cardNumber,lastRow);
 
 // free(tryPerTimeFrame);
