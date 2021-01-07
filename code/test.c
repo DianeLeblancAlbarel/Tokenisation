@@ -106,12 +106,12 @@ for (int i = 0;i<10;i++){
     RAND_bytes(newIv,16);
     uint8_t * table=calloc(size,sizeof(uint8_t));
     int lastRow=0,min = 2147483647u,max = 0;
-    double fealing = 0,timeToGenerate=0,timeToDetokenize=0,timeToClean=0,timeToUpdate=0;
+    double filling = 0,timeToGenerate=0,timeToDetokenize=0,timeToClean=0,timeToUpdate=0;
     int *tryPerTimeFrame = calloc(NUM_ROWS,sizeof(int));
     CARD_T *cardNumber = calloc(NUM_ROWS,sizeof(CARD_T));
     TOKEN_T *generateToken = calloc(NUM_ROWS,sizeof(TOKEN_T));
 
-    generationTable(table,tryPerTimeFrame,&lastRow,&fealing,cardNumber,generateToken,&timeToGenerate);
+    generationTable(table,tryPerTimeFrame,&lastRow,&filling,cardNumber,generateToken,&timeToGenerate);
     minmaxValue(tryPerTimeFrame,lastRow,&min,&max);
     detokenizationTest(table,generateToken,cardNumber,lastRow,&timeToDetokenize);
     updateKeyTest(table,&timeToUpdate,newKey,newIv);
@@ -120,8 +120,8 @@ for (int i = 0;i<10;i++){
     for (int i=0;i<16;i++)    
         iv[i]=newIv[i];
     cleanTest(table,&timeToClean);
-    fprintf(fp,"table fealing rate for %d rows : %f%%\n",NUM_ROWS,fealing);
-    if(fealing<100)
+    fprintf(fp,"table filling rate for %d rows : %f%%\n",NUM_ROWS,filling);
+    if(filling<100)
         fprintf(fp,"try at the first failure : %d\n",*(tryPerTimeFrame+lastRow+1));
     fprintf(fp,"try at the last row : %d\nmaximum try %d\nminimum try %d\n",*(tryPerTimeFrame+lastRow),max,min);
     fprintf(fp,"time to generate a table : %f secondes\n",timeToGenerate);
