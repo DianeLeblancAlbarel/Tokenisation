@@ -22,10 +22,10 @@
 #define HASH_LENGTH 2*SHA224_DIGEST_LENGTH+1
 
 #define TIMEFRAME 0.1
-#define LIFESPAN 10000
+#define LIFESPAN 10000000
 #define MAXUSES 3
 #define ROW_BYTES 32
-#define NUM_ROWS  20
+#define NUM_ROWS  100000000
 #define RANDBYTES 4
 
 #define CARD_T uint64_t
